@@ -1,6 +1,5 @@
 namespace Coursework2021Api.Controllers.Locations
 {
-
     public class LocationResponse
     {
 
