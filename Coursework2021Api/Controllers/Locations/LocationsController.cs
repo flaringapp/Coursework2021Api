@@ -25,10 +25,14 @@ namespace Coursework2021Api.Controllers.Locations
         }
 
         [HttpGet("/api/location")]
-        public ActionResult<Location?> Get([FromQuery] string id)
+        public ActionResult<LocationResponse?> Get([FromQuery] string id)
         {
-            return context.Locations
-                .FirstOrDefault(location => location.Id.ToString() == id);
+            var idInt = int.Parse(id);
+            var location = context.Locations
+                .FirstOrDefault(loc => loc.Id == idInt);
+
+            if (location == null) return BadRequest("No location found for id");
+            return ResponseForLocation(location);
         }
 
         [HttpPost("/api/location")]
@@ -52,7 +56,8 @@ namespace Coursework2021Api.Controllers.Locations
         [HttpDelete("/api/location")]
         public ActionResult Delete([FromQuery] string id)
         {
-            var location = context.Locations.FirstOrDefault(loc => loc.Id.ToString() == id);
+            var idInt = int.Parse(id);
+            var location = context.Locations.FirstOrDefault(loc => loc.Id == idInt);
             if (location == null) return BadRequest("Cannot find location by given id");
 
             context.Locations.Remove(location);
