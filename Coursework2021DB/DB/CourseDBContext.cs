@@ -31,7 +31,7 @@ namespace Coursework2021DB.DB
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Server=tcp:coursework-sql-sever.database.windows.net,1433;Initial Catalog=CourseDB;Persist Security Info=False;User ID=mallivance;Password=Aa123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Server=tcp:coursework-sql-sever.database.windows.net,1433;Initial Catalog=CourseDB;Persist Security Info=False;User ID=mallivance;Password=Aa123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -52,7 +52,6 @@ namespace Coursework2021DB.DB
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
-                    .IsUnicode(false)
                     .HasColumnName("description");
 
                 entity.Property(e => e.GeoLat).HasColumnName("geo_lat");
@@ -61,8 +60,7 @@ namespace Coursework2021DB.DB
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
+                    .HasMaxLength(100)
                     .HasColumnName("name");
             });
 
@@ -71,12 +69,11 @@ namespace Coursework2021DB.DB
                 entity.ToTable("Manager");
 
                 entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
-                    .IsUnicode(false)
                     .HasColumnName("description");
 
                 entity.Property(e => e.Email)
@@ -87,14 +84,12 @@ namespace Coursework2021DB.DB
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
+                    .HasMaxLength(1024)
                     .HasColumnName("first_name");
 
                 entity.Property(e => e.LastName)
                     .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
+                    .HasMaxLength(1024)
                     .HasColumnName("last_name");
 
                 entity.Property(e => e.LocationId).HasColumnName("location_id");
@@ -137,10 +132,9 @@ namespace Coursework2021DB.DB
 
                 entity.Property(e => e.Area).HasColumnName("area");
 
-                entity.Property(e => e.Descripiton)
+                entity.Property(e => e.Description)
                     .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("descripiton");
+                    .HasColumnName("description");
 
                 entity.Property(e => e.HasBalcony).HasColumnName("has_balcony");
 
@@ -151,7 +145,6 @@ namespace Coursework2021DB.DB
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100)
-                    .IsUnicode(false)
                     .HasColumnName("name");
 
                 entity.Property(e => e.PlacePrice).HasColumnName("place_price");
@@ -206,9 +199,7 @@ namespace Coursework2021DB.DB
             {
                 entity.HasIndex(e => e.Amount, "NCINX_Transactions_Date");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Amount).HasColumnName("amount");
 
@@ -247,7 +238,6 @@ namespace Coursework2021DB.DB
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
-                    .IsUnicode(false)
                     .HasColumnName("description");
 
                 entity.Property(e => e.Email)
@@ -258,14 +248,12 @@ namespace Coursework2021DB.DB
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
-                    .HasMaxLength(26)
-                    .IsUnicode(false)
+                    .HasMaxLength(1024)
                     .HasColumnName("first_name");
 
                 entity.Property(e => e.LastName)
                     .IsRequired()
-                    .HasMaxLength(26)
-                    .IsUnicode(false)
+                    .HasMaxLength(1024)
                     .HasColumnName("last_name");
 
                 entity.Property(e => e.TimeCreated)

@@ -16,7 +16,7 @@ namespace Coursework2021DB.DB
         public int LocationId { get; set; }
         public string Type { get; set; }
         public string Name { get; set; }
-        public string Descripiton { get; set; }
+        public string Description { get; set; }
         public float? Area { get; set; }
         public short? WindowCount { get; set; }
         public bool? HasBalcony { get; set; }
