@@ -59,8 +59,7 @@ namespace Coursework2021Api.Controllers.Locations
         [HttpDelete("/api/location")]
         public ActionResult Delete([FromQuery] string id)
         {
-            var idInt = int.Parse(id);
-            var location = context.Locations.FirstOrDefault(loc => loc.Id == idInt);
+            var location = GetById(id);
             if (location == null) return BadRequest("Cannot find location by given id");
 
             context.Locations.Remove(location);
