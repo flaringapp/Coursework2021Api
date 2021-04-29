@@ -1,4 +1,5 @@
 using Coursework2021Api.Auth;
+using Coursework2021Api.Utils;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -41,10 +42,13 @@ namespace Coursework2021Api
 
             services.AddSingleton<CourseDBContext, CourseDBContext>();
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCasePropertyNamingPolicy();
+            });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CompanyManagementAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Coursework2021Api", Version = "v1" });
             });
         }
 
@@ -53,7 +57,7 @@ namespace Coursework2021Api
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CompanyManagementAPI v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Coursework2021Api v1"));
 
             app.UseAuthentication();
             app.UseRouting();
