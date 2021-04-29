@@ -68,9 +68,7 @@ namespace Coursework2021DB.DB
             {
                 entity.ToTable("Manager");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
@@ -92,8 +90,6 @@ namespace Coursework2021DB.DB
                     .HasMaxLength(1024)
                     .HasColumnName("last_name");
 
-                entity.Property(e => e.LocationId).HasColumnName("location_id");
-
                 entity.Property(e => e.TimeCreated)
                     .HasColumnType("datetime")
                     .HasColumnName("time_created");
@@ -101,12 +97,6 @@ namespace Coursework2021DB.DB
                 entity.Property(e => e.TimeUpdated)
                     .HasColumnType("datetime")
                     .HasColumnName("time_updated");
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Manager)
-                    .HasForeignKey<Manager>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Manager_ManagerLocations");
             });
 
             modelBuilder.Entity<ManagerLocation>(entity =>
@@ -124,6 +114,12 @@ namespace Coursework2021DB.DB
                     .HasForeignKey(d => d.LocationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ManagerLocations_Locations");
+
+                entity.HasOne(d => d.LocationNavigation)
+                    .WithMany(p => p.ManagerLocations)
+                    .HasForeignKey(d => d.LocationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ManagerLocations_Manager");
             });
 
             modelBuilder.Entity<Room>(entity =>
@@ -267,8 +263,7 @@ namespace Coursework2021DB.DB
 
             modelBuilder.Entity<UserLocation>(entity =>
             {
-                entity.HasKey(e => e.UserId)
-                    .HasName("PK_UserLocations_1");
+                entity.HasKey(e => e.UserId);
 
                 entity.Property(e => e.UserId)
                     .ValueGeneratedNever()
