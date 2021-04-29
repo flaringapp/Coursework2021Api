@@ -9,7 +9,6 @@ namespace Coursework2021DB.DB
     {
         public Manager()
         {
-            ManagerLocations = new HashSet<ManagerLocation>();
             Transactions = new HashSet<Transaction>();
         }
 
@@ -21,7 +20,7 @@ namespace Coursework2021DB.DB
         public DateTime TimeCreated { get; set; }
         public DateTime TimeUpdated { get; set; }
 
-        public virtual ICollection<ManagerLocation> ManagerLocations { get; set; }
+        public virtual ManagerLocation ManagerLocation { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

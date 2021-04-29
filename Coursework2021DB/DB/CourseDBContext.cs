@@ -115,9 +115,9 @@ namespace Coursework2021DB.DB
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ManagerLocations_Locations");
 
-                entity.HasOne(d => d.LocationNavigation)
-                    .WithMany(p => p.ManagerLocations)
-                    .HasForeignKey(d => d.LocationId)
+                entity.HasOne(d => d.Manager)
+                    .WithOne(p => p.ManagerLocation)
+                    .HasForeignKey<ManagerLocation>(d => d.ManagerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ManagerLocations_Manager");
             });
