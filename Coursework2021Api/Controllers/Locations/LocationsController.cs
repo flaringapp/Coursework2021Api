@@ -73,7 +73,7 @@ namespace Coursework2021Api.Controllers.Locations
         private Location? GetById(string id)
         {
             var idInt = int.Parse(id);
-            return context.Locations.FirstOrDefault(loc => loc.Id == idInt);
+            return context.Locations.AsNoTracking().FirstOrDefault(loc => loc.Id == idInt);
         }
 
         private static LocationResponse ResponseForModel(Location location)
