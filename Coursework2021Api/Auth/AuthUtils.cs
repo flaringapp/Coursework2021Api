@@ -1,11 +1,10 @@
-﻿using Coursework2021Api.Auth;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
-namespace CompanyManagementAPI.Controllers.Auth.Utils
+namespace Coursework2021Api.Auth
 {
     public static class AuthUtils
     {
