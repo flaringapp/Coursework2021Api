@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Locations
 {
@@ -19,7 +19,7 @@ namespace Coursework2021Api.Controllers.Locations
         [HttpGet("/api/locations")]
         public ActionResult<List<LocationResponse>> Get()
         {
-            var locations = context.Locations.Select(location => ResponseForLocation(location))
+            var locations = context.Locations.AsNoTracking().Select(location => ResponseForModel(location))
                 .ToList();
             return locations;
         }
@@ -27,30 +27,34 @@ namespace Coursework2021Api.Controllers.Locations
         [HttpGet("/api/location")]
         public ActionResult<LocationResponse?> Get([FromQuery] string id)
         {
-            var idInt = int.Parse(id);
-            var location = context.Locations
-                .FirstOrDefault(loc => loc.Id == idInt);
+            var location = GetById(id);
 
-            if (location == null) return BadRequest("No location found for id");
-            return ResponseForLocation(location);
+            if (location == null) return BadRequest("No location found for id " + id);
+            return ResponseForModel(location);
         }
 
         [HttpPost("/api/location")]
-        public ActionResult<LocationResponse> Post([FromBody] LocationRequest request)
+        public ActionResult<LocationResponse> Post([FromBody] EditLocationRequest request)
         {
-            var location = CreateLocation(request, true);
+            var location = GetById(request.Id);
+            if (location == null) return BadRequest("Cannot find location for id " + request.Id);
+
+            EditDBModel(location, request);
+
             context.Locations.Update(location);
             context.SaveChanges();
-            return ResponseForLocation(location);
+            // context.Entry(location).Reference().Load();
+            return ResponseForModel(location);
         }
 
         [HttpPut("/api/location")]
-        public ActionResult<LocationResponse> Put([FromBody] LocationRequest request)
+        public ActionResult<LocationResponse> Put([FromBody] AddLocationRequest request)
         {
-            var location = CreateLocation(request);
+            var location = CreateDBModel(request);
             context.Locations.Add(location);
             context.SaveChanges();
-            return ResponseForLocation(location);
+            // context.Entry(location).Reference().Load();
+            return ResponseForModel(location);
         }
 
         [HttpDelete("/api/location")]
@@ -66,7 +70,13 @@ namespace Coursework2021Api.Controllers.Locations
             return Ok();
         }
 
-        private static LocationResponse ResponseForLocation(Location location)
+        private Location? GetById(string id)
+        {
+            var idInt = int.Parse(id);
+            return context.Locations.FirstOrDefault(loc => loc.Id == idInt);
+        }
+
+        private static LocationResponse ResponseForModel(Location location)
         {
             return new()
             {
@@ -80,22 +90,28 @@ namespace Coursework2021Api.Controllers.Locations
             };
         }
 
-        private static Location CreateLocation(LocationRequest request, bool withId = false)
+        private static Location CreateDBModel(AddLocationRequest request)
         {
-            var location = new Location
+            return new()
             {
                 Name = request.Name,
                 Description = request.Description,
                 GeoLat = request.Lat,
                 GeoLon = request.Lon,
                 Address = request.Address,
-                Area = request.Area,
+                Area = request.Area
             };
-            if (withId)
-            {
-                location.Id = int.Parse(request.Id);
-            }
-            return location;
+        }
+
+        private static void EditDBModel(Location model, EditLocationRequest request)
+        {
+            model.Id = int.Parse(request.Id);
+            model.Name = request.Name;
+            model.Description = request.Description;
+            model.GeoLat = request.Lat;
+            model.GeoLon = request.Lon;
+            model.Address = request.Address;
+            model.Area = request.Area;
         }
     }
 }
