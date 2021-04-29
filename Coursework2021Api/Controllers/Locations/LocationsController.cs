@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Locations
 {
@@ -19,7 +18,7 @@ namespace Coursework2021Api.Controllers.Locations
         [HttpGet("/api/locations")]
         public ActionResult<List<LocationResponse>> Get()
         {
-            var locations = context.Locations.AsNoTracking().Select(location => ResponseForModel(location))
+            var locations = context.Locations.Select(location => ResponseForModel(location))
                 .ToList();
             return locations;
         }
@@ -73,7 +72,7 @@ namespace Coursework2021Api.Controllers.Locations
         private Location? GetById(string id)
         {
             var idInt = int.Parse(id);
-            return context.Locations.AsNoTracking().FirstOrDefault(loc => loc.Id == idInt);
+            return context.Locations.FirstOrDefault(loc => loc.Id == idInt);
         }
 
         private static LocationResponse ResponseForModel(Location location)
