@@ -38,7 +38,7 @@ namespace Coursework2021Api.Controllers.Locations
         [HttpPost("/api/location")]
         public ActionResult<LocationResponse> Post([FromBody] LocationRequest request)
         {
-            var location = CreateLocation(request);
+            var location = CreateLocation(request, true);
             context.Locations.Update(location);
             context.SaveChanges();
             return ResponseForLocation(location);
@@ -47,7 +47,7 @@ namespace Coursework2021Api.Controllers.Locations
         [HttpPut("/api/location")]
         public ActionResult<LocationResponse> Put([FromBody] LocationRequest request)
         {
-            var location = CreateLocation(request, true);
+            var location = CreateLocation(request);
             context.Locations.Add(location);
             context.SaveChanges();
             return ResponseForLocation(location);
