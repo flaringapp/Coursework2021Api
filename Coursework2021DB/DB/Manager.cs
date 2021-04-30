@@ -19,6 +19,7 @@ namespace Coursework2021DB.DB
         public string Description { get; set; }
         public DateTime TimeCreated { get; set; }
         public DateTime TimeUpdated { get; set; }
+        public string Password { get; set; }
 
         public virtual ManagerLocation ManagerLocation { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }

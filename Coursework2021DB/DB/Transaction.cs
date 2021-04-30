@@ -11,7 +11,7 @@ namespace Coursework2021DB.DB
         public int ManagerId { get; set; }
         public int RentId { get; set; }
         public int Amount { get; set; }
-        public DateTime? DatePaidFrom { get; set; }
+        public DateTime DatePaidFrom { get; set; }
         public DateTime TimeCreated { get; set; }
         public DateTime DatePaidTo { get; set; }
 
