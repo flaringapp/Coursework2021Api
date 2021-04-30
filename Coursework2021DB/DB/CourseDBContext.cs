@@ -31,8 +31,7 @@ namespace Coursework2021DB.DB
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseLazyLoadingProxies()
-                    .UseSqlServer("Server=tcp:coursework-sql-sever.database.windows.net,1433;Initial Catalog=CourseDB;Persist Security Info=False;User ID=mallivance;Password=Aa123456;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Server=tcp:coursework-sql-sever.database.windows.net,1433;Initial Catalog=CourseDB;Persist Security Info=False;User ID=mallivance;Password=Aa123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -119,7 +118,6 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.ManagerLocations)
                     .HasForeignKey(d => d.LocationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ManagerLocations_Locations");
 
                 entity.HasOne(d => d.Manager)
@@ -164,7 +162,6 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Rooms)
                     .HasForeignKey(d => d.LocationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Rooms_Locations");
             });
 
@@ -187,7 +184,6 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.RoomRentals)
                     .HasForeignKey(d => d.RoomId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RoomRentals_Rooms");
 
                 entity.HasOne(d => d.User)
@@ -223,6 +219,7 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.Manager)
                     .WithMany(p => p.Transactions)
                     .HasForeignKey(d => d.ManagerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Transactions_Manager");
 
                 entity.HasOne(d => d.Rent)
@@ -278,7 +275,6 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.UserLocations)
                     .HasForeignKey(d => d.LocationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserLocations_Locations");
 
                 entity.HasOne(d => d.User)
