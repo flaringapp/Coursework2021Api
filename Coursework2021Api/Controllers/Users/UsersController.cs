@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
@@ -110,8 +111,8 @@ namespace Coursework2021Api.Controllers.Users
                 Email = request.Email,
                 Description = request.Description,
                 UserLocation = userLocation,
-                TimeCreated = request.TimeCreated,
-                TimeUpdated = request.TimeUpdated
+                TimeCreated = DateTime.UtcNow,
+                TimeUpdated = DateTime.UtcNow
             };
         }
 
@@ -126,8 +127,7 @@ namespace Coursework2021Api.Controllers.Users
             model.Email = request.Email;
             model.Description = request.Description;
             model.UserLocation = userLocation;
-            model.TimeCreated = request.TimeCreated;
-            model.TimeUpdated = request.TimeUpdated;
+            model.TimeUpdated = DateTime.UtcNow;
         }
     }
 }
