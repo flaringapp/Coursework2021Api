@@ -18,9 +18,17 @@ namespace Coursework2021Api.Controllers.Rooms
         }
 
         [HttpGet("/api/rooms")]
-        public ActionResult<List<RoomResponse>> Get()
+        public ActionResult<List<RoomResponse>> GetList(
+            [FromQuery] string? locationId
+            )
         {
-            var rooms = context.Rooms.Select(room => ResponseForModel(room))
+            IQueryable<Room> query = context.Rooms;
+            if (locationId != null)
+            {
+                var locationIdInt = int.Parse(locationId);
+                query = query.Where(room => room.LocationId == locationIdInt);
+            }
+            var rooms = query.Select(room => ResponseForModel(room))
                 .ToList();
             return rooms;
         }

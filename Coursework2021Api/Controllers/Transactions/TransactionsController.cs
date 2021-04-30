@@ -18,9 +18,16 @@ namespace Coursework2021Api.Controllers.Transactions
         }
 
         [HttpGet("/api/transactions")]
-        public ActionResult<List<TransactionResponse>> Get()
+        public ActionResult<List<TransactionResponse>> GetList(
+            [FromQuery] string? managerId)
         {
-            var transactions = context.Transactions.Select(transaction => ResponseForModel(transaction))
+            IQueryable<Transaction> query = context.Transactions;
+            if (managerId != null)
+            {
+                var managerIdInt = int.Parse(managerId);
+                query = query.Where(transaction => transaction.ManagerId == managerIdInt);
+            }
+            var transactions = query.Select(transaction => ResponseForModel(transaction))
                 .ToList();
             return transactions;
         }

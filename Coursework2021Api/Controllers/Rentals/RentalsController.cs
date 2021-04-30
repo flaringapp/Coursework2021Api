@@ -18,9 +18,23 @@ namespace Coursework2021Api.Controllers.Rentals
         }
 
         [HttpGet("/api/rentals")]
-        public ActionResult<List<RentalResponse>> Get()
+        public ActionResult<List<RentalResponse>> GetList(
+            [FromQuery] string? roomId,
+            [FromQuery] string? userId)
         {
-            var rentals = context.RoomRentals.Select(rental => ResponseForModel(rental))
+            IQueryable<RoomRental> query = context.RoomRentals;
+            if (roomId != null)
+            {
+                var roomIdInt = int.Parse(roomId);
+                query = query.Where(rental => rental.RoomId == roomIdInt);
+            }
+
+            if (userId != null)
+            {
+                var userIdInt = int.Parse(userId);
+                query = query.Where(rental => rental.UserId == userIdInt);
+            }
+            var rentals = query.Select(rental => ResponseForModel(rental))
                 .ToList();
             return rentals;
         }

@@ -18,9 +18,16 @@ namespace Coursework2021Api.Controllers.Users
         }
 
         [HttpGet("/api/users")]
-        public ActionResult<List<UserResponse>> Get()
+        public ActionResult<List<UserResponse>> GetList(
+            [FromQuery] string? locationId)
         {
-            var users = context.Users.Select(user => ResponseForModel(user))
+            IQueryable<User> query = context.Users;
+            if (locationId != null)
+            {
+                var locationIdInt = int.Parse(locationId);
+                query = query.Where(user => user.UserLocation == null || user.UserLocation.LocationId == locationIdInt);
+            }
+            var users = query.Select(user => ResponseForModel(user))
                 .ToList();
             return users;
         }
