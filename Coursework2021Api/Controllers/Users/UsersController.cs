@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Users
 {
@@ -98,22 +99,21 @@ namespace Coursework2021Api.Controllers.Users
             };
         }
 
-        private static User CreateDBModel(AddUserRequest request)
+        private User CreateDBModel(AddUserRequest request)
         {
+            var user = context.Users.CreateProxy();
             var userLocation = new UserLocation
             {
                 LocationId = int.Parse(request.LocationId)
             };
-            return new User
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                Description = request.Description,
-                UserLocation = userLocation,
-                TimeCreated = DateTime.UtcNow,
-                TimeUpdated = DateTime.UtcNow
-            };
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.Email = request.Email;
+            user.Description = request.Description;
+            user.UserLocation = userLocation;
+            user.TimeCreated = DateTime.UtcNow;
+            user.TimeUpdated = DateTime.UtcNow;
+            return user;
         }
 
         private static void EditDBModel(User model, EditUserRequest request)

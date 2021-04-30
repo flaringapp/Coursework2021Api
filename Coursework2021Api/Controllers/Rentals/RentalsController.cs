@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Rentals
 {
@@ -82,15 +83,14 @@ namespace Coursework2021Api.Controllers.Rentals
             };
         }
 
-        private static RoomRental CreateDBModel(AddRentalRequest request)
+        private RoomRental CreateDBModel(AddRentalRequest request)
         {
-            return new()
-            {
-                UserId = int.Parse(request.UserId),
-                RoomId = int.Parse(request.RoomId),
-                DateStart = DateTime.UtcNow,
-                DatePaidUntil = null
-            };
+            var rental = context.RoomRentals.CreateProxy();
+            rental.UserId = int.Parse(request.UserId);
+            rental.RoomId = int.Parse(request.RoomId);;
+            rental.DateStart = DateTime.UtcNow;
+            rental.DatePaidUntil = null;
+            return rental;
         }
     }
 }

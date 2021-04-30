@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Transactions
 {
@@ -109,21 +110,20 @@ namespace Coursework2021Api.Controllers.Transactions
             };
         }
 
-        private static Transaction CreateDBModel(
+        private Transaction CreateDBModel(
             AddTransactionRequest request,
             int amount,
             DateTime paidFrom,
             DateTime paidTo)
         {
-            return new()
-            {
-                ManagerId = int.Parse(request.ManagerId),
-                RentId = int.Parse(request.RentalId),
-                Amount = amount,
-                DatePaidFrom = paidFrom,
-                DatePaidTo = paidTo,
-                TimeCreated = DateTime.UtcNow
-            };
+            var transaction = context.Transactions.CreateProxy();
+            transaction.ManagerId = int.Parse(request.ManagerId);
+            transaction.RentId = int.Parse(request.RentalId);
+            transaction.Amount = amount;
+            transaction.DatePaidFrom = paidFrom;
+            transaction.DatePaidTo = paidTo;
+            transaction.TimeCreated = DateTime.UtcNow;
+            return transaction;
         }
     }
 }

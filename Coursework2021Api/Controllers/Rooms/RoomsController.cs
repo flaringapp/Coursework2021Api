@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Rooms
 {
@@ -97,21 +98,20 @@ namespace Coursework2021Api.Controllers.Rooms
             };
         }
 
-        private static Room CreateDBModel(AddRoomRequest request)
+        private Room CreateDBModel(AddRoomRequest request)
         {
-            return new()
-            {
-                LocationId = int.Parse(request.LocationId),
-                Name = request.Name,
-                Description = request.Description,
-                Type = request.Type,
-                PlacesCount = request.PlacesCount,
-                WindowCount = request.WindowCount,
-                HasBoard = request.HasBoard,
-                HasBalcony = request.HasBalcony,
-                PlacePrice = request.PlacePrice,
-                Area = request.Area
-            };
+            var room = context.Rooms.CreateProxy();
+            room.LocationId = int.Parse(request.LocationId);
+            room.Name = request.Name;
+            room.Description = request.Description;
+            room.Type = request.Type;
+            room.PlacesCount = request.PlacesCount;
+            room.WindowCount = request.WindowCount;
+            room.HasBoard = request.HasBoard;
+            room.HasBalcony = request.HasBalcony;
+            room.PlacePrice = request.PlacePrice;
+            room.Area = request.Area;
+            return room;
         }
 
         private static void EditDBModel(Room model, EditRoomRequest request)
