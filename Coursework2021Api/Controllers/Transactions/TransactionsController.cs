@@ -113,7 +113,7 @@ namespace Coursework2021Api.Controllers.Transactions
                 DateFrom = transaction.DatePaidFrom,
                 DateTo = transaction.DatePaidTo,
                 Amount = transaction.Amount,
-                TimeCreated = transaction.TimeCreated
+                TimeCreated = transaction.TimeCreated.ToString("yyyy-MM-ddTHH:mm:ss")
             };
         }
 

@@ -41,9 +41,10 @@ namespace Coursework2021Api.Controllers.Managers
             if (manager == null) return BadRequest("Cannot find manager for id " + request.Id);
 
             EditDBModel(manager, request);
-
             context.Managers.Update(manager);
+
             SaveChanges(manager);
+
             return ResponseForModel(manager);
         }
 
@@ -52,7 +53,11 @@ namespace Coursework2021Api.Controllers.Managers
         {
             var manager = CreateDBModel(request);
             context.Managers.Add(manager);
+            context.SaveChanges();
+
+            manager.ManagerLocation = CreateLocation(request.LocationId, manager.Id);
             SaveChanges(manager);
+
             return ResponseForModel(manager);
         }
 
@@ -77,10 +82,13 @@ namespace Coursework2021Api.Controllers.Managers
         private void SaveChanges(Manager model)
         {
             context.SaveChanges();
-            context.Entry(model.ManagerLocation).Reference(ml => ml.Location).Load();
-            context.Entry(model.ManagerLocation).Reference(ml => ml.Manager).Load();
             context.Entry(model).Reference(r => r.ManagerLocation).Load();
             context.Entry(model).Collection(r => r.Transactions).Load();
+            if (model.ManagerLocation != null)
+            {
+                context.Entry(model.ManagerLocation).Reference(ml => ml.Location).Load();
+                context.Entry(model.ManagerLocation).Reference(ml => ml.Manager).Load();
+            }
         }
 
         private static ManagerResponse ResponseForModel(Manager manager)
@@ -101,17 +109,12 @@ namespace Coursework2021Api.Controllers.Managers
 
         private Manager CreateDBModel(AddManagerRequest request)
         {
-            var managerLocation = new ManagerLocation
-            {
-                LocationId = int.Parse(request.LocationId)
-            };
             var manager = context.Managers.CreateProxy();
             manager.FirstName = request.FirstName;
             manager.LastName = request.LastName;
             manager.Email = request.Email;
             manager.Password = request.Password;
             manager.Description = request.Description;
-            manager.ManagerLocation = managerLocation;
             manager.TimeCreated = DateTime.UtcNow;
             manager.TimeUpdated = DateTime.UtcNow;
             return manager;
@@ -119,17 +122,22 @@ namespace Coursework2021Api.Controllers.Managers
 
         private static void EditDBModel(Manager model, EditManagerRequest request)
         {
-            var managerLocation = new ManagerLocation
-            {
-                LocationId = int.Parse(request.LocationId)
-            };
             model.FirstName = request.FirstName;
             model.LastName = request.LastName;
             model.Email = request.Email;
             model.Password = request.Password ?? model.Password;
             model.Description = request.Description;
-            model.ManagerLocation = managerLocation;
             model.TimeUpdated = DateTime.UtcNow;
+        }
+
+        private ManagerLocation CreateLocation(string locationId, int managerId)
+        {
+            var location = new ManagerLocation
+            {
+                LocationId = int.Parse(locationId),
+                ManagerId = managerId
+            };
+            return location;
         }
     }
 }

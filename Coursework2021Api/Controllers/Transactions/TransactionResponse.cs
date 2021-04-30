@@ -16,6 +16,6 @@ namespace Coursework2021Api.Controllers.Transactions
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public int Amount { get; set; }
-        public DateTime TimeCreated { get; set; }
+        public string TimeCreated { get; set; }
     }
 }

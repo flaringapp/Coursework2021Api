@@ -25,7 +25,7 @@ namespace Coursework2021Api.Controllers.Users
             if (locationId != null)
             {
                 var locationIdInt = int.Parse(locationId);
-                query = query.Where(user => user.UserLocation == null || user.UserLocation.LocationId == locationIdInt);
+                query = query.Where(user => user.UserLocation != null && user.UserLocation.LocationId == locationIdInt);
             }
             var users = query.Select(user => ResponseForModel(user))
                 .ToList();
@@ -48,9 +48,10 @@ namespace Coursework2021Api.Controllers.Users
             if (user == null) return BadRequest("Cannot find user for id " + request.Id);
 
             EditDBModel(user, request);
-
             context.Users.Update(user);
+
             SaveChanges(user);
+
             return ResponseForModel(user);
         }
 
@@ -59,7 +60,11 @@ namespace Coursework2021Api.Controllers.Users
         {
             var user = CreateDBModel(request);
             context.Users.Add(user);
+            context.SaveChanges();
+
+            user.UserLocation = CreateLocation(request.LocationId, user.Id);
             SaveChanges(user);
+
             return ResponseForModel(user);
         }
 
@@ -84,10 +89,13 @@ namespace Coursework2021Api.Controllers.Users
         private void SaveChanges(User model)
         {
             context.SaveChanges();
-            context.Entry(model.UserLocation).Reference(ul => ul.Location).Load();
-            context.Entry(model.UserLocation).Reference(ul => ul.User).Load();
             context.Entry(model).Reference(u => u.UserLocation).Load();
             context.Entry(model).Collection(u => u.RoomRentals).Load();
+            if (model.UserLocation != null)
+            {
+                context.Entry(model.UserLocation).Reference(ul => ul.Location).Load();
+                context.Entry(model.UserLocation).Reference(ul => ul.User).Load();
+            }
         }
 
         private static UserResponse ResponseForModel(User model)
@@ -109,15 +117,10 @@ namespace Coursework2021Api.Controllers.Users
         private User CreateDBModel(AddUserRequest request)
         {
             var user = context.Users.CreateProxy();
-            var userLocation = new UserLocation
-            {
-                LocationId = int.Parse(request.LocationId)
-            };
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.Email = request.Email;
             user.Description = request.Description;
-            user.UserLocation = userLocation;
             user.TimeCreated = DateTime.UtcNow;
             user.TimeUpdated = DateTime.UtcNow;
             return user;
@@ -125,16 +128,19 @@ namespace Coursework2021Api.Controllers.Users
 
         private static void EditDBModel(User model, EditUserRequest request)
         {
-            var userLocation = new UserLocation
-            {
-                LocationId = int.Parse(request.LocationId)
-            };
             model.FirstName = request.FirstName;
             model.LastName = request.LastName;
             model.Email = request.Email;
             model.Description = request.Description;
-            model.UserLocation = userLocation;
             model.TimeUpdated = DateTime.UtcNow;
+        }
+
+        private UserLocation CreateLocation(string locationId, int userId)
+        {
+            var location = context.UserLocations.CreateProxy();
+            location.LocationId = int.Parse(locationId);
+            location.UserId = userId;
+            return location;
         }
     }
 }
