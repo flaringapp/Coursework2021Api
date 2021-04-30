@@ -109,6 +109,7 @@ namespace Coursework2021Api.Controllers.Managers
             manager.FirstName = request.FirstName;
             manager.LastName = request.LastName;
             manager.Email = request.Email;
+            manager.Password = request.Password;
             manager.Description = request.Description;
             manager.ManagerLocation = managerLocation;
             manager.TimeCreated = DateTime.UtcNow;
@@ -125,6 +126,7 @@ namespace Coursework2021Api.Controllers.Managers
             model.FirstName = request.FirstName;
             model.LastName = request.LastName;
             model.Email = request.Email;
+            model.Password = request.Password ?? model.Password;
             model.Description = request.Description;
             model.ManagerLocation = managerLocation;
             model.TimeUpdated = DateTime.UtcNow;
