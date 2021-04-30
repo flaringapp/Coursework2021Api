@@ -72,11 +72,13 @@ namespace Coursework2021Api.Controllers.Rentals
             {
                 Id = model.Id.ToString(),
                 UserId = model.UserId.ToString(),
-                UserFirstName = model.User.FirstName,
-                UserLastName = model.User.LastName,
+                UserFirstName = model.User?.FirstName,
+                UserLastName = model.User?.LastName,
                 RoomId = model.RoomId.ToString(),
-                RoomName = model.Room.Name,
-                RoomPrice = model.Room.PlacePrice
+                RoomName = model.Room?.Name,
+                RoomPrice = model.Room?.PlacePrice,
+                DateStart = model.DateStart,
+                DatePaidUntil = model.DatePaidUntil
             };
         }
 
