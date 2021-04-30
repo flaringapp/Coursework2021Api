@@ -16,5 +16,22 @@ namespace Coursework2021Api.Utils
             }
         }
 
+        public static int ToInt(this bool value)
+        {
+            return value ? 1 : 0;
+        }
+
+        public static int? ToInt(this bool? value)
+        {
+            if (value == null) return null;
+            return value.Value ? 1 : 0;
+        }
+
+        public static bool? ToBool(this int? value)
+        {
+            if (value == null) return null;
+            return value.Value == 1;
+        }
+
     }
 }

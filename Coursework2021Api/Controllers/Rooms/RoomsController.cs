@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Coursework2021Api.Utils;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Rooms
 {
@@ -16,9 +18,17 @@ namespace Coursework2021Api.Controllers.Rooms
         }
 
         [HttpGet("/api/rooms")]
-        public ActionResult<List<RoomResponse>> Get()
+        public ActionResult<List<RoomResponse>> GetList(
+            [FromQuery] string? locationId
+            )
         {
-            var rooms = context.Rooms.Select(room => ResponseForModel(room))
+            IQueryable<Room> query = context.Rooms;
+            if (locationId != null)
+            {
+                var locationIdInt = int.Parse(locationId);
+                query = query.Where(room => room.LocationId == locationIdInt);
+            }
+            var rooms = query.Select(room => ResponseForModel(room))
                 .ToList();
             return rooms;
         }
@@ -90,28 +100,27 @@ namespace Coursework2021Api.Controllers.Rooms
                 Type = room.Type,
                 PlacesCount = room.PlacesCount,
                 WindowCount = room.WindowCount,
-                HasBoard = room.HasBoard,
-                HasBalcony = room.HasBalcony,
+                HasBoard = room.HasBoard.ToInt(),
+                HasBalcony = room.HasBalcony.ToInt(),
                 PlacePrice = room.PlacePrice,
                 Area = room.Area
             };
         }
 
-        private static Room CreateDBModel(AddRoomRequest request)
+        private Room CreateDBModel(AddRoomRequest request)
         {
-            return new()
-            {
-                LocationId = int.Parse(request.LocationId),
-                Name = request.Name,
-                Description = request.Description,
-                Type = request.Type,
-                PlacesCount = request.PlacesCount,
-                WindowCount = request.WindowCount,
-                HasBoard = request.HasBoard,
-                HasBalcony = request.HasBalcony,
-                PlacePrice = request.PlacePrice,
-                Area = request.Area
-            };
+            var room = context.Rooms.CreateProxy();
+            room.LocationId = int.Parse(request.LocationId);
+            room.Name = request.Name;
+            room.Description = request.Description;
+            room.Type = request.Type;
+            room.PlacesCount = request.PlacesCount;
+            room.WindowCount = request.WindowCount;
+            room.HasBoard = request.HasBoard.ToBool();
+            room.HasBalcony = request.HasBalcony.ToBool();
+            room.PlacePrice = request.PlacePrice;
+            room.Area = request.Area;
+            return room;
         }
 
         private static void EditDBModel(Room model, EditRoomRequest request)
@@ -123,8 +132,8 @@ namespace Coursework2021Api.Controllers.Rooms
             model.Type = request.Type;
             model.PlacesCount = request.PlacesCount;
             model.WindowCount = request.WindowCount;
-            model.HasBoard = request.HasBoard;
-            model.HasBalcony = request.HasBalcony;
+            model.HasBoard = request.HasBoard.ToBool();
+            model.HasBalcony = request.HasBalcony.ToBool();
             model.PlacePrice = request.PlacePrice;
             model.Area = request.Area;
         }

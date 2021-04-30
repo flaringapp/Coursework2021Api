@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Managers
 {
@@ -97,22 +99,21 @@ namespace Coursework2021Api.Controllers.Managers
             };
         }
 
-        private static Manager CreateDBModel(AddManagerRequest request)
+        private Manager CreateDBModel(AddManagerRequest request)
         {
             var managerLocation = new ManagerLocation
             {
                 LocationId = int.Parse(request.LocationId)
             };
-            return new Manager
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                Description = request.Description,
-                ManagerLocation = managerLocation,
-                TimeCreated = request.TimeCreated,
-                TimeUpdated = request.TimeUpdated
-            };
+            var manager = context.Managers.CreateProxy();
+            manager.FirstName = request.FirstName;
+            manager.LastName = request.LastName;
+            manager.Email = request.Email;
+            manager.Description = request.Description;
+            manager.ManagerLocation = managerLocation;
+            manager.TimeCreated = DateTime.UtcNow;
+            manager.TimeUpdated = DateTime.UtcNow;
+            return manager;
         }
 
         private static void EditDBModel(Manager model, EditManagerRequest request)
@@ -126,8 +127,7 @@ namespace Coursework2021Api.Controllers.Managers
             model.Email = request.Email;
             model.Description = request.Description;
             model.ManagerLocation = managerLocation;
-            model.TimeCreated = request.TimeCreated;
-            model.TimeUpdated = request.TimeUpdated;
+            model.TimeUpdated = DateTime.UtcNow;
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coursework2021Api.Controllers.Locations
 {
@@ -88,17 +89,16 @@ namespace Coursework2021Api.Controllers.Locations
             };
         }
 
-        private static Location CreateDBModel(AddLocationRequest request)
+        private Location CreateDBModel(AddLocationRequest request)
         {
-            return new()
-            {
-                Name = request.Name,
-                Description = request.Description,
-                GeoLat = request.Lat,
-                GeoLon = request.Lon,
-                Address = request.Address,
-                Area = request.Area
-            };
+            var location = context.Locations.CreateProxy();
+            location.Name = request.Name;
+            location.Description = request.Description;
+            location.GeoLat = request.Lat;
+            location.GeoLon = request.Lon;
+            location.Address = request.Address;
+            location.Area = request.Area;
+            return location;
         }
 
         private static void EditDBModel(Location model, EditLocationRequest request)

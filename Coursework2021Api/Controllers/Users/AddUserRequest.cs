@@ -1,10 +1,9 @@
 using System;
 
-namespace Coursework2021Api.Controllers.Managers
+namespace Coursework2021Api.Controllers.Users
 {
-    public class EditManagerRequest
+    public class AddUserRequest
     {
-        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
