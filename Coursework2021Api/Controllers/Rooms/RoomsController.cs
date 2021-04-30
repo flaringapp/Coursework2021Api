@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Coursework2021Api.Utils;
 using Coursework2021DB.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -91,8 +92,8 @@ namespace Coursework2021Api.Controllers.Rooms
                 Type = room.Type,
                 PlacesCount = room.PlacesCount,
                 WindowCount = room.WindowCount,
-                HasBoard = room.HasBoard,
-                HasBalcony = room.HasBalcony,
+                HasBoard = room.HasBoard.ToInt(),
+                HasBalcony = room.HasBalcony.ToInt(),
                 PlacePrice = room.PlacePrice,
                 Area = room.Area
             };
@@ -107,8 +108,8 @@ namespace Coursework2021Api.Controllers.Rooms
             room.Type = request.Type;
             room.PlacesCount = request.PlacesCount;
             room.WindowCount = request.WindowCount;
-            room.HasBoard = request.HasBoard;
-            room.HasBalcony = request.HasBalcony;
+            room.HasBoard = request.HasBoard.ToBool();
+            room.HasBalcony = request.HasBalcony.ToBool();
             room.PlacePrice = request.PlacePrice;
             room.Area = request.Area;
             return room;
@@ -123,8 +124,8 @@ namespace Coursework2021Api.Controllers.Rooms
             model.Type = request.Type;
             model.PlacesCount = request.PlacesCount;
             model.WindowCount = request.WindowCount;
-            model.HasBoard = request.HasBoard;
-            model.HasBalcony = request.HasBalcony;
+            model.HasBoard = request.HasBoard.ToBool();
+            model.HasBalcony = request.HasBalcony.ToBool();
             model.PlacePrice = request.PlacePrice;
             model.Area = request.Area;
         }
