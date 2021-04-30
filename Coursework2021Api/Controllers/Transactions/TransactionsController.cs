@@ -110,8 +110,8 @@ namespace Coursework2021Api.Controllers.Transactions
                 RoomName = transaction.Rent?.Room?.Name,
                 RoomType = transaction.Rent?.Room?.Type,
                 ManagerId = transaction.ManagerId.ToString(),
-                DateFrom = transaction.DatePaidFrom,
-                DateTo = transaction.DatePaidTo,
+                DateFrom = transaction.DatePaidFrom.ToString("yyyy-MM-dd"),
+                DateTo = transaction.DatePaidTo.ToString("yyyy-MM-dd"),
                 Amount = transaction.Amount,
                 TimeCreated = transaction.TimeCreated.ToString("yyyy-MM-ddTHH:mm:ss")
             };

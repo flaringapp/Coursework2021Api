@@ -13,8 +13,8 @@ namespace Coursework2021Api.Controllers.Transactions
         public string? RoomName { get; set; }
         public string? RoomType { get; set; }
         public string? ManagerId { get; set; }
-        public DateTime DateFrom { get; set; }
-        public DateTime DateTo { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
         public int Amount { get; set; }
         public string TimeCreated { get; set; }
     }

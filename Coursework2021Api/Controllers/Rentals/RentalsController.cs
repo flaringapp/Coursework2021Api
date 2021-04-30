@@ -92,8 +92,8 @@ namespace Coursework2021Api.Controllers.Rentals
                 RoomId = model.RoomId.ToString(),
                 RoomName = model.Room?.Name,
                 RoomPrice = model.Room?.PlacePrice,
-                DateStart = model.DateStart,
-                DatePaidUntil = model.DatePaidUntil
+                DateStart = model.DateStart.ToString("yyyy-MM-dd"),
+                DatePaidUntil = model.DatePaidUntil?.ToString("yyyy-MM-dd")
             };
         }
 

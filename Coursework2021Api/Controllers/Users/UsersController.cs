@@ -109,8 +109,8 @@ namespace Coursework2021Api.Controllers.Users
                 Description = model.Description,
                 LocationId = model.UserLocation?.LocationId.ToString(),
                 LocationName = model.UserLocation?.Location?.Name,
-                TimeCreated = model.TimeCreated,
-                TimeUpdated = model.TimeUpdated
+                TimeCreated = model.TimeCreated.ToString("yyyy-MM-dd"),
+                TimeUpdated = model.TimeUpdated.ToString("yyyy-MM-dd")
             };
         }
 

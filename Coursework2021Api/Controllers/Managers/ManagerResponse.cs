@@ -11,7 +11,7 @@ namespace Coursework2021Api.Controllers.Managers
         public string? Description { get; set; }
         public string? LocationId { get; set; }
         public string? LocationName { get; set; }
-        public DateTime TimeCreated { get; set; }
-        public DateTime TimeUpdated { get; set; }
+        public string TimeCreated { get; set; }
+        public string TimeUpdated { get; set; }
     }
 }

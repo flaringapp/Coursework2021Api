@@ -102,8 +102,8 @@ namespace Coursework2021Api.Controllers.Managers
                 Description = manager.Description,
                 LocationId = manager.ManagerLocation?.LocationId.ToString(),
                 LocationName = manager.ManagerLocation?.Location?.Name,
-                TimeCreated = manager.TimeCreated,
-                TimeUpdated = manager.TimeUpdated
+                TimeCreated = manager.TimeCreated.ToString("yyyy-MM-dd"),
+                TimeUpdated = manager.TimeUpdated.ToString("yyyy-MM-dd")
             };
         }
 
