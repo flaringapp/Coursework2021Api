@@ -118,7 +118,6 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.Manager)
                     .WithOne(p => p.ManagerLocation)
                     .HasForeignKey<ManagerLocation>(d => d.ManagerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ManagerLocations_Manager");
             });
 
@@ -187,7 +186,6 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.RoomRentals)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RoomRentals_Users");
             });
 
@@ -218,7 +216,6 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.Manager)
                     .WithMany(p => p.Transactions)
                     .HasForeignKey(d => d.ManagerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Transactions_Manager");
 
                 entity.HasOne(d => d.Rent)
@@ -280,7 +277,6 @@ namespace Coursework2021DB.DB
                 entity.HasOne(d => d.User)
                     .WithOne(p => p.UserLocation)
                     .HasForeignKey<UserLocation>(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserLocations_Users");
             });
 
